@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爬虫系统仪表板</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 600px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .card {
+            border: none;
+        }
+        .btn {
+            margin-bottom: 20px;
+            font-size: 18px;
+            padding: 12px 20px;
+            border-radius: 5px;
+        }
+        .title {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .form-group label {
+            font-size: 18px;
+        }
+        .form-control {
+            font-size: 16px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2 class="text-center title">爬虫系统仪表板</h2>
+
+            <form id="crawlerForm">
+                <div class="form-group">
+                    <label for="position">选择岗位</label>
+                    <input type="text" id="position" name="position" class="form-control" value="Java工程师" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">运行爬虫</button>
+            </form>
+
+            <div id="progress" class="mt-3"></div>
+            <div id="result" class="mt-3"></div>
+            <div id="analysisProgress" class="mt-3" style="display:none;">数据正在分析...请耐心等待...</div>
+            <button id="analyzeData" class="btn btn-success btn-block" style="display:none;">数据分析</button>
+            <button id="logout" class="btn btn-danger btn-block">退出登录</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script>
+        document.getElementById('crawlerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('progress').innerHTML = '正在运行爬虫...请耐心等待...';
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('analysisProgress').style.display = 'none';
+            fetch('/dashboard', {
+                method: 'POST',
+                body: new URLSearchParams(new FormData(event.target))
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('progress').innerHTML = '';
+                document.getElementById('result').innerHTML = data.message;
+                if (data.status === 'success') {
+                    document.getElementById('analyzeData').style.display = 'block';
+                }
+            });
+        });
+
+        document.getElementById('analyzeData').addEventListener('click', function() {
+            document.getElementById('analysisProgress').style.display = 'block';
+            fetch('/run_data_analysis')
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/analysis';
+                } else {
+                    return response.json().then(data => {
+                        document.getElementById('analysisProgress').innerHTML = '数据分析失败: ' + data.message;
+                    });
+                }
+            });
+        });
+
+        document.getElementById('logout').addEventListener('click', function() {
+            window.location.href = '/logout';
+        });
+    </script>
+</body>
+</html>

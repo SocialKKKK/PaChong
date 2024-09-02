@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据分析结果</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 900px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #343a40;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .btn {
+            font-size: 18px;
+            padding: 12px 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center title">数据分析结果</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="section-title">该职位在全国主要城市的数量分布</h3>
+                <img src="{{ url_for('static', filename='images/该职位在全国主要城市的数量分布.jpg') }}" alt="职位数量分布" class="img-fluid">
+            </div>
+            <div class="col-md-12">
+                <h3 class="section-title">该职位在一些主要城市的薪资分布</h3>
+                <img src="{{ url_for('static', filename='images/该职位在一些主要城市的薪资分布.jpg') }}" alt="薪资分布" class="img-fluid">
+            </div>
+            <div class="col-md-12">
+                <h3 class="section-title">该职位整体薪资分布</h3>
+                <img src="{{ url_for('static', filename='images/该职位整体薪资分布.jpg') }}" alt="整体薪资分布" class="img-fluid">
+            </div>
+            <div class="col-md-12">
+                <h3 class="section-title">该职位对学历要求的占比</h3>
+                <img src="{{ url_for('static', filename='images/该职位对学历要求的占比.jpg') }}" alt="学历要求占比" class="img-fluid">
+            </div>
+            <div class="col-md-12">
+                <h3 class="section-title">该职位技能关键词频统计</h3>
+                <img src="{{ url_for('static', filename='images/该职位技能关键词频统计.jpg') }}" alt="技能关键词频统计" class="img-fluid">
+            </div>
+        </div>
+        <button id="logout" class="btn btn-danger btn-block mt-5">退出登录</button>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script>
+        document.getElementById('logout').addEventListener('click', function() {
+            window.location.href = '/logout';
+        });
+    </script>
+</body>
+</html>
